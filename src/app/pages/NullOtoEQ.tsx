@@ -1,5 +1,6 @@
 "use client";
 import { useState, useEffect } from "react";
+import AudioWaveGIF from "../assets/audio_wave.gif";
 
 export default function NullOtoEQ() {
   const [pointCustomData, setPointCustomData] = useState([
