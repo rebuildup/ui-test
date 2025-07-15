@@ -7,19 +7,25 @@ export default function NullOtoHome() {
   const [cancellationEffect, setCancellationEffect] = useState(-21);
   const [isActive, setIsActive] = useState(false);
   const [currentPreset, setCurrentPreset] = useState("洗濯機の音");
-  const [waveformData, setWaveformData] = useState(
-    Array(20)
-      .fill(0)
-      .map(() => Math.random() * 100)
-  );
+  const [waveformData, setWaveformData] = useState<number[] | null>(null);
 
   // Simulate real-time updates
   useEffect(() => {
+    setWaveformData(
+      Array(20)
+        .fill(0)
+        .map(() => Math.random() * 100)
+    );
+
     const interval = setInterval(() => {
       setNoiseLevel((prev) => prev + (Math.random() - 0.5) * 2);
       setRealizedEnvironment((prev) => prev + (Math.random() - 0.5) * 1);
       setCancellationEffect((prev) => prev + (Math.random() - 0.5) * 0.5);
-      setWaveformData((prev) => prev.map(() => Math.random() * 100));
+      setWaveformData(
+        Array(20)
+          .fill(0)
+          .map(() => Math.random() * 100)
+      );
     }, 1000);
 
     return () => clearInterval(interval);
@@ -86,17 +92,18 @@ export default function NullOtoHome() {
 
         {/* Waveform Visualization */}
         <div className="flex justify-center items-end h-16 mb-8 space-x-1">
-          {waveformData.map((height, index) => (
-            <div
-              key={index}
-              className="bg-gray-300 rounded-sm"
-              style={{
-                width: "8px",
-                height: `${height * 0.6}px`,
-                minHeight: "4px",
-              }}
-            ></div>
-          ))}
+          {waveformData &&
+            waveformData.map((height, index) => (
+              <div
+                key={index}
+                className="bg-gray-300 rounded-sm"
+                style={{
+                  width: "8px",
+                  height: `${height * 0.6}px`,
+                  minHeight: "4px",
+                }}
+              ></div>
+            ))}
         </div>
 
         {/* Control Buttons */}
@@ -124,6 +131,15 @@ export default function NullOtoHome() {
         {/* Preset Display */}
         <div className="text-center">
           <p className="text-red-500 text-sm">Preset: {currentPreset}</p>
+        </div>
+
+        {/* Audio Wave GIF */}
+        <div className="absolute z-10 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 justify-center mt-4">
+          <img
+            src="/assets/audio_wave.gif"
+            alt="Audio Wave"
+            className="w-32 h-32 object-contain"
+          />
         </div>
       </div>
     </div>
